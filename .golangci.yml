@@ -11,6 +11,11 @@ formatters:
     - gofumpt # Gofumpt checks whether code was gofumpt-ed. [fast: true, auto-fix: true]
     - goimports # In addition to fixing imports, goimports also formats your code in the same style as gofmt. [fast: true, auto-fix: true]
     - golines
+  settings:
+    gofmt:
+      rewrite-rules:
+        - pattern: interface{}
+          replacement: any
 
 linters:
   default: none
@@ -29,6 +34,7 @@ linters:
     - errchkjson # Checks types passed to the json encoding functions. Reports unsupported types and optionally reports occasions, where the check for the returned error can be omitted. [fast: false, auto-fix: false]
     - errname # Checks that sentinel errors are prefixed with the `Err` and error types are suffixed with the `Error`. [fast: false, auto-fix: false]
     - exptostd # Detects functions from golang.org/x/exp/ that can be replaced by std functions. [auto-fix]
+    - funcorder # Checks the order of functions, methods, and constructors. [fast]
     - gocheckcompilerdirectives # Checks that go compiler directive comments (//go:) are valid. [fast: true, auto-fix: false]
     - gochecksumtype # Run exhaustiveness checks on Go "sum types" [fast: false, auto-fix: false]
     - goconst # Finds repeated strings that could be replaced by a constant [fast: true, auto-fix: false]
@@ -122,6 +128,7 @@ linters:
       linters:
         - unused
         - errcheck
+        - funcorder
 
     - path: internal/tabwriter/.*_test\.go
       linters:

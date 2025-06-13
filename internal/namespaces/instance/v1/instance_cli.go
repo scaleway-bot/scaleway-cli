@@ -210,7 +210,6 @@ have one Instance with a volume containing the OS and another one
 containing the application data, and you want to use different
 snapshot strategies on both volumes.
 
-A snapshot's volume type is its original volume's type (` + "`" + `l_ssd` + "`" + ` or ` + "`" + `b_ssd` + "`" + `).
 Volumes can be created from snapshots of their own type.`,
 		Namespace: "instance",
 		Resource:  "snapshot",
@@ -243,13 +242,9 @@ func instanceVolume() *core.Command {
 appears as a block device on Linux that you can use to create
 a filesystem and mount it.
 
-Two different types of volume (` + "`" + `volume_type` + "`" + `) are available:
-  - ` + "`" + `l_ssd` + "`" + ` is a local block storage: your data is downloaded on
-    the hypervisor and you need to power off your Instance to attach
-    or detach a volume.
-  - ` + "`" + `b_ssd` + "`" + ` is a remote block storage: your data is stored on a
-    centralized cluster. You can plug and unplug a volume while
-    your Instance is running.
+The Instance API only supports local (` + "`" + `l_ssd` + "`" + `) and ` + "`" + `scratch` + "`" + ` volume types.
+Block storage volumes can also be attached to Instances, these volumes are
+managed by the SBS API (https://www.scaleway.com/en/developers/api/block/).
 
 Minimum and maximum volume sizes for each volume types can be queried
 from the zone ` + "`" + `/products/volumes` + "`" + ` API endpoint. _I.e_ for:
@@ -259,10 +254,6 @@ from the zone ` + "`" + `/products/volumes` + "`" + ` API endpoint. _I.e_ for:
 Each type of volume is also subject to a global quota for the sum of all the
 volumes. This quota depends of the level of support and may be
 changed on demand.
-
-Be wary that when terminating an Instance, if you want to keep
-your block storage volume, **you must** detach it before you
-issue the ` + "`" + `terminate` + "`" + ` call.
 
 When using multiple block devices, it's advised to mount them by
 using their UUID instead of their device name. A device name is
@@ -306,7 +297,7 @@ func instanceServerTypeGet() *core.Command {
 				scw.ZonePlWaw3,
 			),
 		},
-		Run: func(ctx context.Context, args interface{}) (i interface{}, e error) {
+		Run: func(ctx context.Context, args any) (i any, e error) {
 			request := args.(*instance.GetServerTypesAvailabilityRequest)
 
 			client := core.ExtractClient(ctx)
@@ -339,7 +330,7 @@ func instanceServerTypeList() *core.Command {
 				scw.ZonePlWaw3,
 			),
 		},
-		Run: func(ctx context.Context, args interface{}) (i interface{}, e error) {
+		Run: func(ctx context.Context, args any) (i any, e error) {
 			request := args.(*instance.ListServersTypesRequest)
 
 			client := core.ExtractClient(ctx)
@@ -382,7 +373,7 @@ func instanceVolumeTypeList() *core.Command {
 				scw.ZonePlWaw3,
 			),
 		},
-		Run: func(ctx context.Context, args interface{}) (i interface{}, e error) {
+		Run: func(ctx context.Context, args any) (i any, e error) {
 			request := args.(*instance.ListVolumesTypesRequest)
 
 			client := core.ExtractClient(ctx)
@@ -538,7 +529,7 @@ func instanceServerList() *core.Command {
 				scw.Zone(core.AllLocalities),
 			),
 		},
-		Run: func(ctx context.Context, args interface{}) (i interface{}, e error) {
+		Run: func(ctx context.Context, args any) (i any, e error) {
 			request := args.(*instance.ListServersRequest)
 
 			client := core.ExtractClient(ctx)
@@ -605,7 +596,7 @@ func instanceServerGet() *core.Command {
 				scw.ZonePlWaw3,
 			),
 		},
-		Run: func(ctx context.Context, args interface{}) (i interface{}, e error) {
+		Run: func(ctx context.Context, args any) (i any, e error) {
 			request := args.(*instance.GetServerRequest)
 
 			client := core.ExtractClient(ctx)
@@ -814,7 +805,7 @@ func instanceServerUpdate() *core.Command {
 				scw.ZonePlWaw3,
 			),
 		},
-		Run: func(ctx context.Context, args interface{}) (i interface{}, e error) {
+		Run: func(ctx context.Context, args any) (i any, e error) {
 			request := args.(*instance.UpdateServerRequest)
 
 			client := core.ExtractClient(ctx)
@@ -875,7 +866,7 @@ func instanceServerListActions() *core.Command {
 				scw.ZonePlWaw3,
 			),
 		},
-		Run: func(ctx context.Context, args interface{}) (i interface{}, e error) {
+		Run: func(ctx context.Context, args any) (i any, e error) {
 			request := args.(*instance.ListServerActionsRequest)
 
 			client := core.ExtractClient(ctx)
@@ -915,7 +906,7 @@ func instanceUserDataList() *core.Command {
 				scw.ZonePlWaw3,
 			),
 		},
-		Run: func(ctx context.Context, args interface{}) (i interface{}, e error) {
+		Run: func(ctx context.Context, args any) (i any, e error) {
 			request := args.(*instance.ListServerUserDataRequest)
 
 			client := core.ExtractClient(ctx)
@@ -962,7 +953,7 @@ func instanceUserDataDelete() *core.Command {
 				scw.ZonePlWaw3,
 			),
 		},
-		Run: func(ctx context.Context, args interface{}) (i interface{}, e error) {
+		Run: func(ctx context.Context, args any) (i any, e error) {
 			request := args.(*instance.DeleteServerUserDataRequest)
 
 			client := core.ExtractClient(ctx)
@@ -1034,7 +1025,7 @@ func instanceUserDataSet() *core.Command {
 				scw.ZonePlWaw3,
 			),
 		},
-		Run: func(ctx context.Context, args interface{}) (i interface{}, e error) {
+		Run: func(ctx context.Context, args any) (i any, e error) {
 			request := args.(*instance.SetServerUserDataRequest)
 
 			client := core.ExtractClient(ctx)
@@ -1088,7 +1079,7 @@ func instanceUserDataGet() *core.Command {
 				scw.ZonePlWaw3,
 			),
 		},
-		Run: func(ctx context.Context, args interface{}) (i interface{}, e error) {
+		Run: func(ctx context.Context, args any) (i any, e error) {
 			request := args.(*instance.GetServerUserDataRequest)
 
 			client := core.ExtractClient(ctx)
@@ -1133,7 +1124,7 @@ If the specified Instance offer is flagged as end of service, the best compatibl
 				scw.ZonePlWaw3,
 			),
 		},
-		Run: func(ctx context.Context, args interface{}) (i interface{}, e error) {
+		Run: func(ctx context.Context, args any) (i any, e error) {
 			request := args.(*instance.GetServerCompatibleTypesRequest)
 
 			client := core.ExtractClient(ctx)
@@ -1178,7 +1169,7 @@ func instanceServerAttachFilesystem() *core.Command {
 				scw.ZonePlWaw3,
 			),
 		},
-		Run: func(ctx context.Context, args interface{}) (i interface{}, e error) {
+		Run: func(ctx context.Context, args any) (i any, e error) {
 			request := args.(*instance.AttachServerFileSystemRequest)
 
 			client := core.ExtractClient(ctx)
@@ -1223,7 +1214,7 @@ func instanceServerDetachFilesystem() *core.Command {
 				scw.ZonePlWaw3,
 			),
 		},
-		Run: func(ctx context.Context, args interface{}) (i interface{}, e error) {
+		Run: func(ctx context.Context, args any) (i any, e error) {
 			request := args.(*instance.DetachServerFileSystemRequest)
 
 			client := core.ExtractClient(ctx)
@@ -1293,7 +1284,7 @@ func instanceImageList() *core.Command {
 				scw.Zone(core.AllLocalities),
 			),
 		},
-		Run: func(ctx context.Context, args interface{}) (i interface{}, e error) {
+		Run: func(ctx context.Context, args any) (i any, e error) {
 			request := args.(*instance.ListImagesRequest)
 
 			client := core.ExtractClient(ctx)
@@ -1354,7 +1345,7 @@ func instanceImageGet() *core.Command {
 				scw.ZonePlWaw3,
 			),
 		},
-		Run: func(ctx context.Context, args interface{}) (i interface{}, e error) {
+		Run: func(ctx context.Context, args any) (i any, e error) {
 			request := args.(*instance.GetImageRequest)
 
 			client := core.ExtractClient(ctx)
@@ -1491,7 +1482,7 @@ func instanceImageCreate() *core.Command {
 				scw.ZonePlWaw3,
 			),
 		},
-		Run: func(ctx context.Context, args interface{}) (i interface{}, e error) {
+		Run: func(ctx context.Context, args any) (i any, e error) {
 			request := args.(*instance.CreateImageRequest)
 
 			client := core.ExtractClient(ctx)
@@ -1578,7 +1569,7 @@ func instanceImageUpdate() *core.Command {
 				scw.ZonePlWaw3,
 			),
 		},
-		Run: func(ctx context.Context, args interface{}) (i interface{}, e error) {
+		Run: func(ctx context.Context, args any) (i any, e error) {
 			request := args.(*instance.UpdateImageRequest)
 
 			client := core.ExtractClient(ctx)
@@ -1618,7 +1609,7 @@ func instanceImageDelete() *core.Command {
 				scw.ZonePlWaw3,
 			),
 		},
-		Run: func(ctx context.Context, args interface{}) (i interface{}, e error) {
+		Run: func(ctx context.Context, args any) (i any, e error) {
 			request := args.(*instance.DeleteImageRequest)
 
 			client := core.ExtractClient(ctx)
@@ -1704,7 +1695,7 @@ func instanceSnapshotList() *core.Command {
 				scw.Zone(core.AllLocalities),
 			),
 		},
-		Run: func(ctx context.Context, args interface{}) (i interface{}, e error) {
+		Run: func(ctx context.Context, args any) (i any, e error) {
 			request := args.(*instance.ListSnapshotsRequest)
 
 			client := core.ExtractClient(ctx)
@@ -1814,7 +1805,7 @@ func instanceSnapshotCreate() *core.Command {
 				scw.ZonePlWaw3,
 			),
 		},
-		Run: func(ctx context.Context, args interface{}) (i interface{}, e error) {
+		Run: func(ctx context.Context, args any) (i any, e error) {
 			request := args.(*instance.CreateSnapshotRequest)
 
 			client := core.ExtractClient(ctx)
@@ -1837,7 +1828,7 @@ func instanceSnapshotCreate() *core.Command {
 			},
 			{
 				Short:    "Import a QCOW file as an Instance snapshot",
-				ArgsJSON: `{"bucket":"my-bucket","key":"my-qcow2-file-name","name":"my-imported-snapshot","volume_type":"b_ssd","zone":"fr-par-1"}`,
+				ArgsJSON: `{"bucket":"my-bucket","key":"my-qcow2-file-name","name":"my-imported-snapshot","volume_type":"l_ssd","zone":"fr-par-1"}`,
 			},
 		},
 	}
@@ -1872,7 +1863,7 @@ func instanceSnapshotGet() *core.Command {
 				scw.ZonePlWaw3,
 			),
 		},
-		Run: func(ctx context.Context, args interface{}) (i interface{}, e error) {
+		Run: func(ctx context.Context, args any) (i any, e error) {
 			request := args.(*instance.GetSnapshotRequest)
 
 			client := core.ExtractClient(ctx)
@@ -1936,7 +1927,7 @@ func instanceSnapshotUpdate() *core.Command {
 				scw.ZonePlWaw3,
 			),
 		},
-		Run: func(ctx context.Context, args interface{}) (i interface{}, e error) {
+		Run: func(ctx context.Context, args any) (i any, e error) {
 			request := args.(*instance.UpdateSnapshotRequest)
 
 			client := core.ExtractClient(ctx)
@@ -1976,7 +1967,7 @@ func instanceSnapshotDelete() *core.Command {
 				scw.ZonePlWaw3,
 			),
 		},
-		Run: func(ctx context.Context, args interface{}) (i interface{}, e error) {
+		Run: func(ctx context.Context, args any) (i any, e error) {
 			request := args.(*instance.DeleteSnapshotRequest)
 
 			client := core.ExtractClient(ctx)
@@ -2047,7 +2038,7 @@ func instanceSnapshotExport() *core.Command {
 				scw.ZonePlWaw3,
 			),
 		},
-		Run: func(ctx context.Context, args interface{}) (i interface{}, e error) {
+		Run: func(ctx context.Context, args any) (i any, e error) {
 			request := args.(*instance.ExportSnapshotRequest)
 
 			client := core.ExtractClient(ctx)
@@ -2130,7 +2121,7 @@ func instanceVolumeList() *core.Command {
 				scw.Zone(core.AllLocalities),
 			),
 		},
-		Run: func(ctx context.Context, args interface{}) (i interface{}, e error) {
+		Run: func(ctx context.Context, args any) (i any, e error) {
 			request := args.(*instance.ListVolumesRequest)
 
 			client := core.ExtractClient(ctx)
@@ -2153,20 +2144,8 @@ func instanceVolumeList() *core.Command {
 				ArgsJSON: `null`,
 			},
 			{
-				Short:    "List all block storage volumes",
-				ArgsJSON: `{"volume_type":"b_ssd"}`,
-			},
-			{
-				Short:    "List all local storage volumes",
-				ArgsJSON: `{"volume_type":"l_ssd"}`,
-			},
-			{
 				Short:    "List all volumes that match a name",
 				ArgsJSON: `{"name":"foobar"}`,
-			},
-			{
-				Short:    "List all block storage volumes that match a name",
-				ArgsJSON: `{"name":"foobar","volume_type":"b_ssd"}`,
 			},
 		},
 		View: &core.View{Fields: []*core.ViewField{
@@ -2278,7 +2257,7 @@ func instanceVolumeCreate() *core.Command {
 				scw.ZonePlWaw3,
 			),
 		},
-		Run: func(ctx context.Context, args interface{}) (i interface{}, e error) {
+		Run: func(ctx context.Context, args any) (i any, e error) {
 			request := args.(*instance.CreateVolumeRequest)
 
 			client := core.ExtractClient(ctx)
@@ -2328,7 +2307,7 @@ func instanceVolumeGet() *core.Command {
 				scw.ZonePlWaw3,
 			),
 		},
-		Run: func(ctx context.Context, args interface{}) (i interface{}, e error) {
+		Run: func(ctx context.Context, args any) (i any, e error) {
 			request := args.(*instance.GetVolumeRequest)
 
 			client := core.ExtractClient(ctx)
@@ -2348,7 +2327,7 @@ func instanceVolumeGet() *core.Command {
 func instanceVolumeUpdate() *core.Command {
 	return &core.Command{
 		Short:     `Update a volume`,
-		Long:      `Replace the name and/or size properties of a volume specified by its ID, with the specified value(s). Any volume name can be changed, however only ` + "`" + `b_ssd` + "`" + ` volumes can currently be increased in size.`,
+		Long:      `Replace the name and/or size properties of a volume specified by its ID, with the specified value(s).`,
 		Namespace: "instance",
 		Resource:  "volume",
 		Verb:      "update",
@@ -2395,7 +2374,7 @@ func instanceVolumeUpdate() *core.Command {
 				scw.ZonePlWaw3,
 			),
 		},
-		Run: func(ctx context.Context, args interface{}) (i interface{}, e error) {
+		Run: func(ctx context.Context, args any) (i any, e error) {
 			request := args.(*instance.UpdateVolumeRequest)
 
 			client := core.ExtractClient(ctx)
@@ -2449,7 +2428,7 @@ func instanceVolumeDelete() *core.Command {
 				scw.ZonePlWaw3,
 			),
 		},
-		Run: func(ctx context.Context, args interface{}) (i interface{}, e error) {
+		Run: func(ctx context.Context, args any) (i any, e error) {
 			request := args.(*instance.DeleteVolumeRequest)
 
 			client := core.ExtractClient(ctx)
@@ -2531,7 +2510,7 @@ func instanceSecurityGroupList() *core.Command {
 				scw.Zone(core.AllLocalities),
 			),
 		},
-		Run: func(ctx context.Context, args interface{}) (i interface{}, e error) {
+		Run: func(ctx context.Context, args any) (i any, e error) {
 			request := args.(*instance.ListSecurityGroupsRequest)
 
 			client := core.ExtractClient(ctx)
@@ -2658,7 +2637,7 @@ func instanceSecurityGroupCreate() *core.Command {
 				scw.ZonePlWaw3,
 			),
 		},
-		Run: func(ctx context.Context, args interface{}) (i interface{}, e error) {
+		Run: func(ctx context.Context, args any) (i any, e error) {
 			request := args.(*instance.CreateSecurityGroupRequest)
 
 			client := core.ExtractClient(ctx)
@@ -2720,7 +2699,7 @@ func instanceSecurityGroupGet() *core.Command {
 				scw.ZonePlWaw3,
 			),
 		},
-		Run: func(ctx context.Context, args interface{}) (i interface{}, e error) {
+		Run: func(ctx context.Context, args any) (i any, e error) {
 			request := args.(*instance.GetSecurityGroupRequest)
 
 			client := core.ExtractClient(ctx)
@@ -2766,7 +2745,7 @@ func instanceSecurityGroupDelete() *core.Command {
 				scw.ZonePlWaw3,
 			),
 		},
-		Run: func(ctx context.Context, args interface{}) (i interface{}, e error) {
+		Run: func(ctx context.Context, args any) (i any, e error) {
 			request := args.(*instance.DeleteSecurityGroupRequest)
 
 			client := core.ExtractClient(ctx)
@@ -2892,7 +2871,7 @@ func instanceSecurityGroupUpdate() *core.Command {
 				scw.ZonePlWaw3,
 			),
 		},
-		Run: func(ctx context.Context, args interface{}) (i interface{}, e error) {
+		Run: func(ctx context.Context, args any) (i any, e error) {
 			request := args.(*instance.UpdateSecurityGroupRequest)
 
 			client := core.ExtractClient(ctx)
@@ -2925,7 +2904,7 @@ func instanceSecurityGroupListDefaultRules() *core.Command {
 				scw.ZonePlWaw3,
 			),
 		},
-		Run: func(ctx context.Context, args interface{}) (i interface{}, e error) {
+		Run: func(ctx context.Context, args any) (i any, e error) {
 			request := args.(*instance.ListDefaultSecurityGroupRulesRequest)
 
 			client := core.ExtractClient(ctx)
@@ -2966,7 +2945,7 @@ func instanceSecurityGroupListRules() *core.Command {
 				scw.Zone(core.AllLocalities),
 			),
 		},
-		Run: func(ctx context.Context, args interface{}) (i interface{}, e error) {
+		Run: func(ctx context.Context, args any) (i any, e error) {
 			request := args.(*instance.ListSecurityGroupRulesRequest)
 
 			client := core.ExtractClient(ctx)
@@ -3085,7 +3064,7 @@ func instanceSecurityGroupCreateRule() *core.Command {
 				scw.ZonePlWaw3,
 			),
 		},
-		Run: func(ctx context.Context, args interface{}) (i interface{}, e error) {
+		Run: func(ctx context.Context, args any) (i any, e error) {
 			request := args.(*instance.CreateSecurityGroupRuleRequest)
 
 			client := core.ExtractClient(ctx)
@@ -3234,7 +3213,7 @@ func instanceSecurityGroupSetRules() *core.Command {
 				scw.ZonePlWaw3,
 			),
 		},
-		Run: func(ctx context.Context, args interface{}) (i interface{}, e error) {
+		Run: func(ctx context.Context, args any) (i any, e error) {
 			request := args.(*instance.SetSecurityGroupRulesRequest)
 
 			client := core.ExtractClient(ctx)
@@ -3279,7 +3258,7 @@ func instanceSecurityGroupDeleteRule() *core.Command {
 				scw.ZonePlWaw3,
 			),
 		},
-		Run: func(ctx context.Context, args interface{}) (i interface{}, e error) {
+		Run: func(ctx context.Context, args any) (i any, e error) {
 			request := args.(*instance.DeleteSecurityGroupRuleRequest)
 
 			client := core.ExtractClient(ctx)
@@ -3337,7 +3316,7 @@ func instanceSecurityGroupGetRule() *core.Command {
 				scw.ZonePlWaw3,
 			),
 		},
-		Run: func(ctx context.Context, args interface{}) (i interface{}, e error) {
+		Run: func(ctx context.Context, args any) (i any, e error) {
 			request := args.(*instance.GetSecurityGroupRuleRequest)
 
 			client := core.ExtractClient(ctx)
@@ -3456,7 +3435,7 @@ func instanceSecurityGroupUpdateRule() *core.Command {
 				scw.ZonePlWaw3,
 			),
 		},
-		Run: func(ctx context.Context, args interface{}) (i interface{}, e error) {
+		Run: func(ctx context.Context, args any) (i any, e error) {
 			request := args.(*instance.UpdateSecurityGroupRuleRequest)
 
 			client := core.ExtractClient(ctx)
@@ -3518,7 +3497,7 @@ func instancePlacementGroupList() *core.Command {
 				scw.Zone(core.AllLocalities),
 			),
 		},
-		Run: func(ctx context.Context, args interface{}) (i interface{}, e error) {
+		Run: func(ctx context.Context, args any) (i any, e error) {
 			request := args.(*instance.ListPlacementGroupsRequest)
 
 			client := core.ExtractClient(ctx)
@@ -3609,7 +3588,7 @@ func instancePlacementGroupCreate() *core.Command {
 				scw.ZonePlWaw3,
 			),
 		},
-		Run: func(ctx context.Context, args interface{}) (i interface{}, e error) {
+		Run: func(ctx context.Context, args any) (i any, e error) {
 			request := args.(*instance.CreatePlacementGroupRequest)
 
 			client := core.ExtractClient(ctx)
@@ -3675,7 +3654,7 @@ func instancePlacementGroupGet() *core.Command {
 				scw.ZonePlWaw3,
 			),
 		},
-		Run: func(ctx context.Context, args interface{}) (i interface{}, e error) {
+		Run: func(ctx context.Context, args any) (i any, e error) {
 			request := args.(*instance.GetPlacementGroupRequest)
 
 			client := core.ExtractClient(ctx)
@@ -3754,7 +3733,7 @@ func instancePlacementGroupSet() *core.Command {
 				scw.ZonePlWaw3,
 			),
 		},
-		Run: func(ctx context.Context, args interface{}) (i interface{}, e error) {
+		Run: func(ctx context.Context, args any) (i any, e error) {
 			request := args.(*instance.SetPlacementGroupRequest)
 
 			client := core.ExtractClient(ctx)
@@ -3830,7 +3809,7 @@ func instancePlacementGroupUpdate() *core.Command {
 				scw.ZonePlWaw3,
 			),
 		},
-		Run: func(ctx context.Context, args interface{}) (i interface{}, e error) {
+		Run: func(ctx context.Context, args any) (i any, e error) {
 			request := args.(*instance.UpdatePlacementGroupRequest)
 
 			client := core.ExtractClient(ctx)
@@ -3884,7 +3863,7 @@ func instancePlacementGroupDelete() *core.Command {
 				scw.ZonePlWaw3,
 			),
 		},
-		Run: func(ctx context.Context, args interface{}) (i interface{}, e error) {
+		Run: func(ctx context.Context, args any) (i any, e error) {
 			request := args.(*instance.DeletePlacementGroupRequest)
 
 			client := core.ExtractClient(ctx)
@@ -3941,7 +3920,7 @@ func instancePlacementGroupGetServers() *core.Command {
 				scw.ZonePlWaw3,
 			),
 		},
-		Run: func(ctx context.Context, args interface{}) (i interface{}, e error) {
+		Run: func(ctx context.Context, args any) (i any, e error) {
 			request := args.(*instance.GetPlacementGroupServersRequest)
 
 			client := core.ExtractClient(ctx)
@@ -3988,7 +3967,7 @@ func instancePlacementGroupSetServers() *core.Command {
 				scw.ZonePlWaw3,
 			),
 		},
-		Run: func(ctx context.Context, args interface{}) (i interface{}, e error) {
+		Run: func(ctx context.Context, args any) (i any, e error) {
 			request := args.(*instance.SetPlacementGroupServersRequest)
 
 			client := core.ExtractClient(ctx)
@@ -4041,7 +4020,7 @@ func instancePlacementGroupUpdateServers() *core.Command {
 				scw.ZonePlWaw3,
 			),
 		},
-		Run: func(ctx context.Context, args interface{}) (i interface{}, e error) {
+		Run: func(ctx context.Context, args any) (i any, e error) {
 			request := args.(*instance.UpdatePlacementGroupServersRequest)
 
 			client := core.ExtractClient(ctx)
@@ -4110,7 +4089,7 @@ func instanceIPList() *core.Command {
 				scw.Zone(core.AllLocalities),
 			),
 		},
-		Run: func(ctx context.Context, args interface{}) (i interface{}, e error) {
+		Run: func(ctx context.Context, args any) (i any, e error) {
 			request := args.(*instance.ListIPsRequest)
 
 			client := core.ExtractClient(ctx)
@@ -4225,7 +4204,7 @@ func instanceIPCreate() *core.Command {
 				scw.ZonePlWaw3,
 			),
 		},
-		Run: func(ctx context.Context, args interface{}) (i interface{}, e error) {
+		Run: func(ctx context.Context, args any) (i any, e error) {
 			request := args.(*instance.CreateIPRequest)
 
 			client := core.ExtractClient(ctx)
@@ -4279,7 +4258,7 @@ func instanceIPGet() *core.Command {
 				scw.ZonePlWaw3,
 			),
 		},
-		Run: func(ctx context.Context, args interface{}) (i interface{}, e error) {
+		Run: func(ctx context.Context, args any) (i any, e error) {
 			request := args.(*instance.GetIPRequest)
 
 			client := core.ExtractClient(ctx)
@@ -4359,7 +4338,7 @@ func instanceIPUpdate() *core.Command {
 				scw.ZonePlWaw3,
 			),
 		},
-		Run: func(ctx context.Context, args interface{}) (i interface{}, e error) {
+		Run: func(ctx context.Context, args any) (i any, e error) {
 			request := args.(*instance.UpdateIPRequest)
 
 			client := core.ExtractClient(ctx)
@@ -4413,7 +4392,7 @@ func instanceIPDelete() *core.Command {
 				scw.ZonePlWaw3,
 			),
 		},
-		Run: func(ctx context.Context, args interface{}) (i interface{}, e error) {
+		Run: func(ctx context.Context, args any) (i any, e error) {
 			request := args.(*instance.DeleteIPRequest)
 
 			client := core.ExtractClient(ctx)
@@ -4482,7 +4461,7 @@ func instancePrivateNicList() *core.Command {
 				scw.Zone(core.AllLocalities),
 			),
 		},
-		Run: func(ctx context.Context, args interface{}) (i interface{}, e error) {
+		Run: func(ctx context.Context, args any) (i any, e error) {
 			request := args.(*instance.ListPrivateNICsRequest)
 
 			client := core.ExtractClient(ctx)
@@ -4569,7 +4548,7 @@ func instancePrivateNicCreate() *core.Command {
 				scw.ZonePlWaw3,
 			),
 		},
-		Run: func(ctx context.Context, args interface{}) (i interface{}, e error) {
+		Run: func(ctx context.Context, args any) (i any, e error) {
 			request := args.(*instance.CreatePrivateNICRequest)
 
 			client := core.ExtractClient(ctx)
@@ -4616,7 +4595,7 @@ func instancePrivateNicGet() *core.Command {
 				scw.ZonePlWaw3,
 			),
 		},
-		Run: func(ctx context.Context, args interface{}) (i interface{}, e error) {
+		Run: func(ctx context.Context, args any) (i any, e error) {
 			request := args.(*instance.GetPrivateNICRequest)
 
 			client := core.ExtractClient(ctx)
@@ -4670,7 +4649,7 @@ func instancePrivateNicUpdate() *core.Command {
 				scw.ZonePlWaw3,
 			),
 		},
-		Run: func(ctx context.Context, args interface{}) (i interface{}, e error) {
+		Run: func(ctx context.Context, args any) (i any, e error) {
 			request := args.(*instance.UpdatePrivateNICRequest)
 
 			client := core.ExtractClient(ctx)
@@ -4723,7 +4702,7 @@ func instancePrivateNicDelete() *core.Command {
 				scw.ZonePlWaw3,
 			),
 		},
-		Run: func(ctx context.Context, args interface{}) (i interface{}, e error) {
+		Run: func(ctx context.Context, args any) (i any, e error) {
 			request := args.(*instance.DeletePrivateNICRequest)
 
 			client := core.ExtractClient(ctx)
@@ -4781,7 +4760,7 @@ The endpoint also returns the validation_key, which must be provided to the [Mig
 				scw.ZonePlWaw3,
 			),
 		},
-		Run: func(ctx context.Context, args interface{}) (i interface{}, e error) {
+		Run: func(ctx context.Context, args any) (i any, e error) {
 			request := args.(*instance.PlanBlockMigrationRequest)
 
 			client := core.ExtractClient(ctx)
@@ -4835,7 +4814,7 @@ func instanceVolumeApplyMigration() *core.Command {
 				scw.ZonePlWaw3,
 			),
 		},
-		Run: func(ctx context.Context, args interface{}) (i interface{}, e error) {
+		Run: func(ctx context.Context, args any) (i any, e error) {
 			request := args.(*instance.ApplyBlockMigrationRequest)
 
 			client := core.ExtractClient(ctx)
