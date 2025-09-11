@@ -4,7 +4,7 @@ go 1.24.6
 
 require (
 	github.com/aws/aws-sdk-go-v2 v1.39.0
-	github.com/aws/aws-sdk-go-v2/service/s3 v1.88.0
+	github.com/aws/aws-sdk-go-v2/service/s3 v1.88.1
 	github.com/buildpacks/pack v0.38.2
 	github.com/c-bata/go-prompt v0.2.6
 	github.com/charmbracelet/bubbletea v1.3.8
@@ -14,7 +14,7 @@ require (
 	github.com/docker/docker v28.4.0+incompatible
 	github.com/dustin/go-humanize v1.0.1
 	github.com/fatih/color v1.18.0
-	github.com/getsentry/sentry-go v0.35.1
+	github.com/getsentry/sentry-go v0.35.2
 	github.com/ghodss/yaml v1.0.0
 	github.com/gorilla/websocket v1.5.3
 	github.com/hashicorp/go-version v1.7.0
@@ -23,7 +23,7 @@ require (
 	github.com/mattn/go-isatty v0.0.20
 	github.com/moby/buildkit v0.24.0
 	github.com/opencontainers/go-digest v1.0.0
-	github.com/scaleway/scaleway-sdk-go v1.0.0-beta.34.0.20250909122954-71c9aae6a7e3
+	github.com/scaleway/scaleway-sdk-go v1.0.0-beta.34.0.20250911091431-3c6786e253d0
 	github.com/skratchdot/open-golang v0.0.0-20200116055534-eef842397966
 	github.com/spf13/cobra v1.10.1
 	github.com/spf13/pflag v1.0.10
