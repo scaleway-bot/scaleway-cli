@@ -10,9 +10,12 @@ Data Warehouse API.
   - [Create a deployment](#create-a-deployment)
   - [Delete a deployment](#delete-a-deployment)
   - [Get a deployment](#get-a-deployment)
+  - [Get deployment TLS certificate](#get-deployment-tls-certificate)
   - [List deployments](#list-deployments)
   - [Update a deployment](#update-a-deployment)
 - [Endpoint management commands](#endpoint-management-commands)
+  - [Create a new endpoint for a deployment](#create-a-new-endpoint-for-a-deployment)
+  - [Delete an endpoint from a deployment](#delete-an-endpoint-from-a-deployment)
 - [List available presets](#list-available-presets)
   - [List available presets](#list-available-presets)
 - [User management commands](#user-management-commands)
@@ -167,6 +170,26 @@ scw datawarehouse deployment get <deployment-id ...> [arg=value ...]
 
 
 
+### Get deployment TLS certificate
+
+Retrieve the TLS certificate associated with a deployment.
+
+**Usage:**
+
+```
+scw datawarehouse deployment get-certificate <deployment-id ...> [arg=value ...]
+```
+
+
+**Args:**
+
+| Name |   | Description |
+|------|---|-------------|
+| deployment-id | Required | UUID of the deployment |
+| region | Default: `fr-par`<br />One of: `fr-par` | Region to target. If none is passed will use default region from the config |
+
+
+
 ### List deployments
 
 List all deployments in the specified region, for a given Scaleway Project. By default, the deployments returned in the list are ordered by creation date in ascending order, though this can be modified via the order_by field. You can define additional parameters for your query, such as `tags` and `name`. For the `name` parameter, the value you provide will be checked against the whole name string to see if it includes the string you put in the parameter.
@@ -220,13 +243,45 @@ scw datawarehouse deployment update <deployment-id ...> [arg=value ...]
 
 Manage endpoints associated with a deployment.
 
-Manage endpoints associated with a deployment.
+
+### Create a new endpoint for a deployment
+
+Create a new endpoint for a deployment.
 
 **Usage:**
 
 ```
-scw datawarehouse endpoint
+scw datawarehouse endpoint create [arg=value ...]
 ```
+
+
+**Args:**
+
+| Name |   | Description |
+|------|---|-------------|
+| deployment-id |  | UUID of the deployment |
+| endpoint.private-network.private-network-id |  | UUID of the Private Network |
+| region | Default: `fr-par`<br />One of: `fr-par` | Region to target. If none is passed will use default region from the config |
+
+
+
+### Delete an endpoint from a deployment
+
+Delete an endpoint from a deployment.
+
+**Usage:**
+
+```
+scw datawarehouse endpoint delete [arg=value ...]
+```
+
+
+**Args:**
+
+| Name |   | Description |
+|------|---|-------------|
+| endpoint-id | Required | UUID of the Endpoint to delete |
+| region | Default: `fr-par`<br />One of: `fr-par` | Region to target. If none is passed will use default region from the config |
 
 
 
