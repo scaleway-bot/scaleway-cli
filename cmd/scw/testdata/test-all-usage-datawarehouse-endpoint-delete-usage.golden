@@ -1,18 +1,16 @@
 🎲🎲🎲 EXIT CODE: 0 🎲🎲🎲
 🟥🟥🟥 STDERR️️ 🟥🟥🟥️
-Upgrade a Cloud Essentials for OpenSearch deployment.
+Delete an endpoint from a deployment.
 
 USAGE:
-  scw searchdb deployment upgrade [arg=value ...]
+  scw datawarehouse endpoint delete [arg=value ...]
 
 ARGS:
-  deployment-id         UUID of the Deployment to upgrade
-  [node-amount]         Amount of node upgrade target
-  [volume-size-bytes]   Volume size upgrade target
-  [region=fr-par]       Region to target. If none is passed will use default region from the config (fr-par)
+  endpoint-id       UUID of the Endpoint to delete
+  [region=fr-par]   Region to target. If none is passed will use default region from the config (fr-par)
 
 FLAGS:
-  -h, --help                help for upgrade
+  -h, --help                help for delete
       --list-sub-commands   List all subcommands
 
 GLOBAL FLAGS:
