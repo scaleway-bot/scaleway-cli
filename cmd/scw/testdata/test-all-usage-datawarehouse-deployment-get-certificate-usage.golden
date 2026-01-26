@@ -1,18 +1,16 @@
 🎲🎲🎲 EXIT CODE: 0 🎲🎲🎲
 🟥🟥🟥 STDERR️️ 🟥🟥🟥️
-Upgrade a Cloud Essentials for OpenSearch deployment.
+Retrieve the TLS certificate associated with a deployment.
 
 USAGE:
-  scw searchdb deployment upgrade [arg=value ...]
+  scw datawarehouse deployment get-certificate <deployment-id ...> [arg=value ...]
 
 ARGS:
-  deployment-id         UUID of the Deployment to upgrade
-  [node-amount]         Amount of node upgrade target
-  [volume-size-bytes]   Volume size upgrade target
-  [region=fr-par]       Region to target. If none is passed will use default region from the config (fr-par)
+  deployment-id     UUID of the deployment
+  [region=fr-par]   Region to target. If none is passed will use default region from the config (fr-par)
 
 FLAGS:
-  -h, --help                help for upgrade
+  -h, --help                help for get-certificate
       --list-sub-commands   List all subcommands
 
 GLOBAL FLAGS:
