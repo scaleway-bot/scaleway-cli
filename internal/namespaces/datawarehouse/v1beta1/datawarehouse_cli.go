@@ -33,10 +33,13 @@ func GetGeneratedCommands() *core.Commands {
 		datawarehouseDeploymentCreate(),
 		datawarehouseDeploymentUpdate(),
 		datawarehouseDeploymentDelete(),
+		datawarehouseDeploymentGetCertificate(),
 		datawarehouseUserList(),
 		datawarehouseUserCreate(),
 		datawarehouseUserUpdate(),
 		datawarehouseUserDelete(),
+		datawarehouseEndpointDelete(),
+		datawarehouseEndpointCreate(),
 		datawarehouseDatabaseList(),
 		datawarehouseDatabaseCreate(),
 		datawarehouseDatabaseDelete(),
@@ -469,6 +472,36 @@ func datawarehouseDeploymentDelete() *core.Command {
 	}
 }
 
+func datawarehouseDeploymentGetCertificate() *core.Command {
+	return &core.Command{
+		Short:     `Get deployment TLS certificate`,
+		Long:      `Retrieve the TLS certificate associated with a deployment.`,
+		Namespace: "datawarehouse",
+		Resource:  "deployment",
+		Verb:      "get-certificate",
+		// Deprecated:    false,
+		ArgsType: reflect.TypeOf(datawarehouse.GetDeploymentCertificateRequest{}),
+		ArgSpecs: core.ArgSpecs{
+			{
+				Name:       "deployment-id",
+				Short:      `UUID of the deployment`,
+				Required:   true,
+				Deprecated: false,
+				Positional: true,
+			},
+			core.RegionArgSpec(scw.RegionFrPar),
+		},
+		Run: func(ctx context.Context, args any) (i any, e error) {
+			request := args.(*datawarehouse.GetDeploymentCertificateRequest)
+
+			client := core.ExtractClient(ctx)
+			api := datawarehouse.NewAPI(client)
+
+			return api.GetDeploymentCertificate(request)
+		},
+	}
+}
+
 func datawarehouseUserList() *core.Command {
 	return &core.Command{
 		Short:     `List users associated with a deployment`,
@@ -671,6 +704,80 @@ func datawarehouseUserDelete() *core.Command {
 				Resource: "user",
 				Verb:     "delete",
 			}, nil
+		},
+	}
+}
+
+func datawarehouseEndpointDelete() *core.Command {
+	return &core.Command{
+		Short:     `Delete an endpoint from a deployment`,
+		Long:      `Delete an endpoint from a deployment.`,
+		Namespace: "datawarehouse",
+		Resource:  "endpoint",
+		Verb:      "delete",
+		// Deprecated:    false,
+		ArgsType: reflect.TypeOf(datawarehouse.DeleteEndpointRequest{}),
+		ArgSpecs: core.ArgSpecs{
+			{
+				Name:       "endpoint-id",
+				Short:      `UUID of the Endpoint to delete`,
+				Required:   true,
+				Deprecated: false,
+				Positional: false,
+			},
+			core.RegionArgSpec(scw.RegionFrPar),
+		},
+		Run: func(ctx context.Context, args any) (i any, e error) {
+			request := args.(*datawarehouse.DeleteEndpointRequest)
+
+			client := core.ExtractClient(ctx)
+			api := datawarehouse.NewAPI(client)
+			e = api.DeleteEndpoint(request)
+			if e != nil {
+				return nil, e
+			}
+
+			return &core.SuccessResult{
+				Resource: "endpoint",
+				Verb:     "delete",
+			}, nil
+		},
+	}
+}
+
+func datawarehouseEndpointCreate() *core.Command {
+	return &core.Command{
+		Short:     `Create a new endpoint for a deployment`,
+		Long:      `Create a new endpoint for a deployment.`,
+		Namespace: "datawarehouse",
+		Resource:  "endpoint",
+		Verb:      "create",
+		// Deprecated:    false,
+		ArgsType: reflect.TypeOf(datawarehouse.CreateEndpointRequest{}),
+		ArgSpecs: core.ArgSpecs{
+			{
+				Name:       "deployment-id",
+				Short:      `UUID of the deployment`,
+				Required:   false,
+				Deprecated: false,
+				Positional: false,
+			},
+			{
+				Name:       "endpoint.private-network.private-network-id",
+				Short:      `UUID of the Private Network`,
+				Required:   false,
+				Deprecated: false,
+				Positional: false,
+			},
+			core.RegionArgSpec(scw.RegionFrPar),
+		},
+		Run: func(ctx context.Context, args any) (i any, e error) {
+			request := args.(*datawarehouse.CreateEndpointRequest)
+
+			client := core.ExtractClient(ctx)
+			api := datawarehouse.NewAPI(client)
+
+			return api.CreateEndpoint(request)
 		},
 	}
 }
