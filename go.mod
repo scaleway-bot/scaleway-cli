@@ -4,7 +4,7 @@ go 1.25.5
 
 require (
 	github.com/aws/aws-sdk-go-v2 v1.41.1
-	github.com/aws/aws-sdk-go-v2/service/s3 v1.95.1
+	github.com/aws/aws-sdk-go-v2/service/s3 v1.96.0
 	github.com/buildpacks/pack v0.39.1
 	github.com/c-bata/go-prompt v0.2.6
 	github.com/charmbracelet/bubbletea v1.3.10
@@ -23,7 +23,7 @@ require (
 	github.com/mattn/go-isatty v0.0.20
 	github.com/moby/buildkit v0.26.3
 	github.com/opencontainers/go-digest v1.0.0
-	github.com/scaleway/scaleway-sdk-go v1.0.0-beta.36.0.20260116124856-e43316650348
+	github.com/scaleway/scaleway-sdk-go v1.0.0-beta.36.0.20260122164551-ccce19cd242c
 	github.com/skratchdot/open-golang v0.0.0-20200116055534-eef842397966
 	github.com/spf13/cobra v1.10.2
 	github.com/spf13/pflag v1.0.10
