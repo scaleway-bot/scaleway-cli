@@ -1,18 +1,16 @@
 🎲🎲🎲 EXIT CODE: 0 🎲🎲🎲
 🟥🟥🟥 STDERR️️ 🟥🟥🟥️
-Route-rules management commands.
+List datalab resources.
 
 USAGE:
-  scw edge-services route-rules <command>
+  scw datalab notebook-version list [arg=value ...]
 
-AVAILABLE COMMANDS:
-  add         Add route rules
-  edit        Edit all route rules of a route stage
-  list        List route rules
-  set         Set route rules
+ARGS:
+  [order-by]        The order by field. Available options are `name_asc` and `name_desc`. (name_asc | name_desc)
+  [region=fr-par]   Region to target. If none is passed will use default region from the config (fr-par | all)
 
 FLAGS:
-  -h, --help                help for route-rules
+  -h, --help                help for list
       --list-sub-commands   List all subcommands
 
 GLOBAL FLAGS:
@@ -20,5 +18,3 @@ GLOBAL FLAGS:
   -D, --debug            Enable debug mode
   -o, --output string    Output format: json or human, see 'scw help output' for more info (default "human")
   -p, --profile string   The config profile to use
-
-Use "scw edge-services route-rules [command] --help" for more information about a command.
