@@ -14,7 +14,7 @@ require (
 	github.com/docker/docker v28.5.2+incompatible
 	github.com/dustin/go-humanize v1.0.1
 	github.com/fatih/color v1.18.0
-	github.com/getsentry/sentry-go v0.42.0
+	github.com/getsentry/sentry-go v0.43.0
 	github.com/ghodss/yaml v1.0.0
 	github.com/gorilla/websocket v1.5.4-0.20250319132907-e064f32e3674
 	github.com/hashicorp/go-version v1.8.0
@@ -87,7 +87,7 @@ require (
 	github.com/charmbracelet/x/cellbuf v0.0.13-0.20250311204145-2c3ea96c31dd // indirect
 	github.com/charmbracelet/x/term v0.2.1 // indirect
 	github.com/chrismellard/docker-credential-acr-env v0.0.0-20230304212654-82a0ddb27589 // indirect
-	github.com/cloudflare/circl v1.6.1 // indirect
+	github.com/cloudflare/circl v1.6.3 // indirect
 	github.com/containerd/containerd/api v1.10.0 // indirect
 	github.com/containerd/containerd/v2 v2.2.1 // indirect
 	github.com/containerd/continuity v0.4.5 // indirect
