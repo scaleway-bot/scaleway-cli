@@ -20,7 +20,7 @@ require (
 	github.com/hashicorp/go-version v1.8.0
 	github.com/karrick/tparse/v2 v2.8.2
 	github.com/mattn/go-colorable v0.1.14
-	github.com/mattn/go-isatty v0.0.20
+	github.com/mattn/go-isatty v0.0.22
 	github.com/moby/buildkit v0.27.1
 	github.com/moby/go-archive v0.2.0
 	github.com/opencontainers/go-digest v1.0.0
