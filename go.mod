@@ -13,7 +13,7 @@ require (
 	github.com/dnaeon/go-vcr v1.2.0
 	github.com/docker/docker v28.5.2+incompatible
 	github.com/dustin/go-humanize v1.0.1
-	github.com/fatih/color v1.18.0
+	github.com/fatih/color v1.19.0
 	github.com/getsentry/sentry-go v0.43.0
 	github.com/ghodss/yaml v1.0.0
 	github.com/gorilla/websocket v1.5.4-0.20250319132907-e064f32e3674
@@ -205,7 +205,7 @@ require (
 	go.yaml.in/yaml/v4 v4.0.0-rc.4 // indirect
 	golang.org/x/mod v0.32.0 // indirect
 	golang.org/x/net v0.49.0 // indirect
-	golang.org/x/sys v0.41.0 // indirect
+	golang.org/x/sys v0.42.0 // indirect
 	golang.org/x/time v0.14.0 // indirect
 	golang.org/x/tools v0.41.0 // indirect
 	google.golang.org/genproto/googleapis/api v0.0.0-20251103181224-f26f9409b101 // indirect
