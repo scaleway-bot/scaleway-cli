@@ -19,7 +19,7 @@ require (
 	github.com/gorilla/websocket v1.5.4-0.20250319132907-e064f32e3674
 	github.com/hashicorp/go-version v1.8.0
 	github.com/karrick/tparse/v2 v2.8.2
-	github.com/mattn/go-colorable v0.1.14
+	github.com/mattn/go-colorable v0.1.15
 	github.com/mattn/go-isatty v0.0.20
 	github.com/moby/buildkit v0.27.1
 	github.com/moby/go-archive v0.2.0
